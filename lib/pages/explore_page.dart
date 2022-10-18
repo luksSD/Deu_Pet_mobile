@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:deu_pet/data/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,7 +8,7 @@ import 'package:flutter_tindercard/flutter_tindercard.dart';
 import '../theme/colors.dart';
 
 class ExplorePage extends StatefulWidget {
-  const ExplorePage({ Key? key }) : super(key: key);
+  const ExplorePage({Key key}) : super(key: key);
 
   @override
   State<ExplorePage> createState() => _ExplorePageState();
@@ -24,6 +26,10 @@ class _ExplorePageState extends State<ExplorePage> {
 
   getBody() {
     var size = MediaQuery.of(context).size;
+    List<dynamic> list = [
+      Image.asset("assets/images/animals/adilson.jpg"),
+      Image.asset("assets/images/animals/lua.jpg")
+    ];
     return Padding(
       padding: const EdgeInsets.only(bottom: 120),
       child: Container(
@@ -33,9 +39,13 @@ class _ExplorePageState extends State<ExplorePage> {
           maxHeight: size.height * 0.75,
           minWidth: size.width * 0.75,
           minHeight: size.height * 0.6,
-          cardBuilder: (context, index) => 
-            Container(), 
-          totalNum: null),
+          totalNum: list.length,
+          cardBuilder: (context, index) {
+            return Card(
+              child: list[index],
+            );
+          },
+        ),
       ),
     );
   }
@@ -49,28 +59,28 @@ class _ExplorePageState extends State<ExplorePage> {
       child: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(item_icons.length, (index){
-          return Container(
-            width: item_icons[index]['size'],
-            height: item_icons[index]['size'],
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: white,
-              boxShadow: [
-                BoxShadow(
-                  color: grey.withOpacity(0.1),
-                  spreadRadius: 5,
-                  blurRadius: 10
-                )  
-              ]),
-              child: Center(
-                child: SvgPicture.asset(item_icons[index]['icon'], 
-                  width: item_icons[index]['icon_size'],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(item_icons.length, (index) {
+              return Container(
+                width: item_icons[index]['size'],
+                height: item_icons[index]['size'],
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: white,
+                    boxShadow: [
+                      BoxShadow(
+                          color: grey.withOpacity(0.1),
+                          spreadRadius: 5,
+                          blurRadius: 10)
+                    ]),
+                child: Center(
+                  child: SvgPicture.asset(
+                    item_icons[index]['icon'],
+                    width: item_icons[index]['icon_size'],
+                  ),
                 ),
-              ),
-          );
-        })),
+              );
+            })),
       ),
     );
   }
