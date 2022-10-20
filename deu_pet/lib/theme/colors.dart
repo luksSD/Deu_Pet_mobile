@@ -9,5 +9,5 @@ const Color primary = Color(0xFFFD5C61);
 // gradient
 const Color yellow_one = Color(0xFFeec365);
 const Color yellow_two = Color(0xFFde9024);
-const Color primary_one = Color(0xFFfc3973);
-const Color primary_two = Color(0xFFfd5f60);
+const Color primary_one = Color(0xFFFFFFFF);
+const Color primary_two = Color(0xFFFFB6B6);
