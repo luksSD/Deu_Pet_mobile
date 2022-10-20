@@ -11,7 +11,7 @@ class _LikesPageState extends State<LikesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: white,
+      backgroundColor: Color.fromARGB(255, 253, 237, 242),
       body: getBody(),
       bottomSheet: getFooter(),
     );

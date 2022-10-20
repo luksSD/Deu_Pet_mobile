@@ -28,7 +28,7 @@ class _ExplorePageState extends State<ExplorePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: white,
+      backgroundColor: Color.fromARGB(255, 253, 237, 242),
       body: getBody(),
       bottomSheet: getBottomSheet(),
     );
@@ -249,9 +249,11 @@ class _ExplorePageState extends State<ExplorePage>
     return Container(
       width: size.width,
       height: 120,
-      decoration: BoxDecoration(color: white),
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 253, 237, 242),
+      ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+        padding: const EdgeInsets.only(left: 100, right: 100, bottom: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(item_icons.length, (index) {

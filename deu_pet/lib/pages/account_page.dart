@@ -12,7 +12,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: grey.withOpacity(0.2),
+      backgroundColor: Color.fromARGB(255, 253, 237, 242),
       body: getBody(),
     );
   }

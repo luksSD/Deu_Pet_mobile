@@ -26,7 +26,7 @@ class _ChatPageState extends State<ChatPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                "Messages",
+                "Mensagens",
                 style: TextStyle(
                     fontSize: 18, fontWeight: FontWeight.bold, color: primary),
               ),
@@ -36,7 +36,7 @@ class _ChatPageState extends State<ChatPage> {
                 decoration: BoxDecoration(color: black.withOpacity(0.15)),
               ),
               Text(
-                "Matches",
+                "Deu Pet",
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -51,45 +51,12 @@ class _ChatPageState extends State<ChatPage> {
         Divider(
           thickness: 0.8,
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8, top: 0, right: 8),
-          child: Container(
-            height: 38,
-            decoration: BoxDecoration(
-                color: grey.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(5)),
-            child: TextField(
-              cursorColor: black.withOpacity(0.5),
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: black.withOpacity(0.5),
-                  ),
-                  hintText: "Search 0 Matches"),
-            ),
-          ),
-        ),
-        Divider(
-          thickness: 0.8,
-        ),
         SizedBox(
           height: 10,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "New Matches",
-                style: TextStyle(
-                    fontSize: 15, fontWeight: FontWeight.w500, color: primary),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Padding(

@@ -1,3 +1,4 @@
+import 'package:deu_pet/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:deu_pet/pages/account_page.dart';
@@ -15,7 +16,7 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 253, 237, 242),
       appBar: getAppBar(),
       body: getBody(),
     );
@@ -44,7 +45,7 @@ class _RootPageState extends State<RootPage> {
           : "assets/images/account_icon.svg",
     ];
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: white,
       elevation: 0,
       title: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
