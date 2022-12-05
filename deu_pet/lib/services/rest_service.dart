@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 class RestService {
@@ -22,7 +24,7 @@ class RestService {
           .get(Uri.parse(url), headers: {"Content-type": "application/json"});
 
       if (response.statusCode == 200) {
-        return response.body;
+        return (utf8.decode(response.bodyBytes));
       }
 
       return null;

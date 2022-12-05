@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:deu_pet/models/animals.dart';
@@ -7,7 +8,6 @@ class AnimalsServices {
   List<Animals> animals = [];
 
   Future<int?> postLikeAnimal(int? animalid) async {
-
     Map<String, int> map = {"pessoaId": 3, "animalId": animalid!};
 
     var response = await RestService.post(
@@ -18,7 +18,8 @@ class AnimalsServices {
     return response;
   }
 
-  Future<List<Animals>> getAnimals() async {
+  Future<List<Animals>> getAnimals(
+      StreamController<List<Animals>> controller) async {
     String urlGetAnimal =
         'http://deupet-api.us-east-1.elasticbeanstalk.com/api/v1/animal/read-all';
 
@@ -39,6 +40,8 @@ class AnimalsServices {
         });
 
         // var jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
+
+        controller.add(animals);
 
         return animals;
       } else {

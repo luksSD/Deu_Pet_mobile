@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:deu_pet/services/animals_services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -20,7 +22,9 @@ class _ExplorePageState extends State<ExplorePage>
   CardController controller = CardController();
 
   AnimalsServices _animalsServices = AnimalsServices();
-  List<Animals> listAnimals = [];
+
+  StreamController<List<Animals>> streamController =
+      StreamController<List<Animals>>.broadcast();
 
   List itemsTemp = [];
   int itemLength = 0;
@@ -28,6 +32,7 @@ class _ExplorePageState extends State<ExplorePage>
   @override
   void initState() {
     super.initState();
+    _animalsServices.getAnimals(streamController);
     setState(() {
       itemsTemp = explore_json;
       itemLength = explore_json.length;
@@ -50,8 +55,8 @@ class _ExplorePageState extends State<ExplorePage>
       padding: const EdgeInsets.only(bottom: 120),
       child: Container(
           height: size.height,
-          child: FutureBuilder<List<Animals>>(
-            future: _animalsServices.getAnimals(),
+          child: StreamBuilder<List<Animals>>(
+            stream: streamController.stream,
             initialData: null,
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
@@ -83,10 +88,9 @@ class _ExplorePageState extends State<ExplorePage>
                   } else {
                     // animals = animalsController.getAnimalsList(snapshot.data);
                     // print(animals);
-                    List<Animals> list = snapshot.data as List<Animals>;
 
                     return TinderSwapCard(
-                      totalNum: list.length,
+                      totalNum: _animalsServices.animals.length,
                       maxWidth: MediaQuery.of(context).size.width,
                       maxHeight: MediaQuery.of(context).size.height * 0.75,
                       minWidth: MediaQuery.of(context).size.width * 0.75,
@@ -103,7 +107,7 @@ class _ExplorePageState extends State<ExplorePage>
                           //     //Left Swipe
                           //   }
                           // },
-                        Container(
+                          Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
@@ -122,7 +126,10 @@ class _ExplorePageState extends State<ExplorePage>
                                 width: size.width,
                                 height: size.height,
                                 child: Image.network(
-                                    list[index].primaryImagePath.toString()),
+                                  _animalsServices
+                                      .animals[index].primaryImagePath
+                                      .toString(),
+                                ),
                                 // decoration: BoxDecoration(
                                 //   image: DecorationImage(
                                 //     image: AssetImage(
@@ -160,8 +167,8 @@ class _ExplorePageState extends State<ExplorePage>
                                                 Row(
                                                   children: [
                                                     Text(
-                                                      list[index]
-                                                          .nome
+                                                      _animalsServices
+                                                          .animals[index].nome
                                                           .toString(),
                                                       style: TextStyle(
                                                         color: white,
@@ -174,8 +181,8 @@ class _ExplorePageState extends State<ExplorePage>
                                                       width: 10,
                                                     ),
                                                     Text(
-                                                      list[index]
-                                                          .sexo
+                                                      _animalsServices
+                                                          .animals[index].sexo
                                                           .toString(),
                                                       style: TextStyle(
                                                         color: white,
@@ -201,7 +208,8 @@ class _ExplorePageState extends State<ExplorePage>
                                                       width: 10,
                                                     ),
                                                     Text(
-                                                      list[index]
+                                                      _animalsServices
+                                                          .animals[index]
                                                           .situacao
                                                           .toString(),
                                                       style: TextStyle(
@@ -225,33 +233,38 @@ class _ExplorePageState extends State<ExplorePage>
                                                             const EdgeInsets
                                                                 .only(right: 8),
                                                         child: Container(
-                                                          decoration: BoxDecoration(
-                                                              border:
-                                                                  Border.all(
-                                                                      color:
-                                                                          white,
-                                                                      width: 2),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          30),
-                                                              color: white
-                                                                  .withOpacity(
-                                                                      0.4)),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                              color: white,
+                                                              width: 2,
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                              30,
+                                                            ),
+                                                            color: white
+                                                                .withOpacity(
+                                                              0.4,
+                                                            ),
+                                                          ),
                                                           child: Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                        .only(
-                                                                    top: 3,
-                                                                    bottom: 3,
-                                                                    left: 10,
-                                                                    right: 10),
+                                                                    .only(
+                                                              top: 3,
+                                                              bottom: 3,
+                                                              left: 10,
+                                                              right: 10,
+                                                            ),
                                                             child: Text(
                                                               itemsTemp[index]
                                                                       ['likes']
                                                                   [indexLikes],
                                                               style: TextStyle(
-                                                                  color: white),
+                                                                color: white,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
@@ -260,30 +273,35 @@ class _ExplorePageState extends State<ExplorePage>
                                                     return Padding(
                                                       padding:
                                                           const EdgeInsets.only(
-                                                              right: 8),
+                                                        right: 8,
+                                                      ),
                                                       child: Container(
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        30),
-                                                            color: white
-                                                                .withOpacity(
-                                                                    0.2)),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            30,
+                                                          ),
+                                                          color: white
+                                                              .withOpacity(0.2),
+                                                        ),
                                                         child: Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
-                                                                  top: 3,
-                                                                  bottom: 3,
-                                                                  left: 10,
-                                                                  right: 10),
+                                                                  .only(
+                                                            top: 3,
+                                                            bottom: 3,
+                                                            left: 10,
+                                                            right: 10,
+                                                          ),
                                                           child: Text(
                                                             itemsTemp[index]
                                                                     ['likes']
                                                                 [indexLikes],
                                                             style: TextStyle(
-                                                                color: white),
+                                                              color: white,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
@@ -328,35 +346,75 @@ class _ExplorePageState extends State<ExplorePage>
                       },
                       swipeCompleteCallback:
                           (CardSwipeOrientation orientation, int index) async {
-
                         if (orientation.name == "RIGHT") {
                           var response = await _animalsServices.postLikeAnimal(
-                              _animalsServices.animals[index].id);
+                            _animalsServices.animals[index].id,
+                          );
 
-                          if (response != -1){
+                          if (response != -1) {
                             return showDialog<void>(
                               context: context,
-                              barrierDismissible: false, // user must tap button!
+                              barrierDismissible:
+                                  false, // user must tap button!
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   backgroundColor: Colors.pink[50],
-                                  title:  SvgPicture.asset(
-                                        "assets/images/explore_active_icon.svg",
-                                        height: 30, width: 30
-                                        ),
+                                  title: SvgPicture.asset(
+                                    "assets/images/explore_active_icon.svg",
+                                    height: 30,
+                                    width: 30,
+                                  ),
                                   content: SingleChildScrollView(
                                     child: ListBody(
                                       children: const <Widget>[
-                                        Center(child: Text('DeuPet!',  style: TextStyle(fontSize: 30, fontFamily: 'RobotoMono', 
-                                        color: Color.fromARGB(255, 231, 57, 115), fontWeight: FontWeight.bold))),
-                                        Center(child: Text('Entre em contato com a instituição para prosseguir com a adoção',  style: TextStyle(fontSize: 10, fontFamily: 'RobotoMono', 
-                                        color: Color.fromARGB(255, 134, 102, 113), fontWeight: FontWeight.bold))),
+                                        Center(
+                                          child: Text(
+                                            'DeuPet!',
+                                            style: TextStyle(
+                                              fontSize: 30,
+                                              fontFamily: 'RobotoMono',
+                                              color: Color.fromARGB(
+                                                255,
+                                                231,
+                                                57,
+                                                115,
+                                              ),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            'Entre em contato com a instituição para prosseguir com a adoção',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontFamily: 'RobotoMono',
+                                              color: Color.fromARGB(
+                                                255,
+                                                134,
+                                                102,
+                                                113,
+                                              ),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
                                   actions: <Widget>[
                                     TextButton(
-                                      child: const Text('Confirmar', style: TextStyle(color: Color.fromARGB(255, 231, 57, 115)),),
+                                      child: const Text(
+                                        'Confirmar',
+                                        style: TextStyle(
+                                          color: Color.fromARGB(
+                                            255,
+                                            231,
+                                            57,
+                                            115,
+                                          ),
+                                        ),
+                                      ),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
@@ -384,6 +442,8 @@ class _ExplorePageState extends State<ExplorePage>
   }
 
   Widget getBottomSheet() {
+    var response;
+
     var size = MediaQuery.of(context).size;
     return Container(
       width: size.width,
@@ -410,37 +470,132 @@ class _ExplorePageState extends State<ExplorePage>
                       // changes position of shadow
                     ),
                   ]),
-                child: Center(
-                  child: IconButton(
-                    icon: 
-                    SvgPicture.asset(
-                      item_icons[index]['icon'],
-                      width: item_icons[index]['icon_size'],
-                    ),
-                    onPressed: () => {
-                      
-                      //Tentei verificar o tamanho da lista pelo service e manipular dessa forma, embora atualize, é necessário
-                      //Atualizar o list.lenght caso queira fazer um pop na lista ao clicar no botão
-                      // setState(() {
-                      //  _animalsServices.animals.length-1;
-                      // })
-
-
-                      //Essa primeira forma tentei passar a posicao e o index do card
-                      // setState(() => {
-                      //   CardSwipeOrientation.RIGHT.index
-                      // })
-
-                      //Essa segunda, passando o offset da posicao do card mais um align ali pelo delta, porque o if rola quando o align.x é maior que 
-                      //zero, ai passei (1,0) pra testar, porém sem sucesso
-                      // setState(() => {
-                      //   DragUpdateDetails(globalPosition: Offset.zero, delta: Offset(1,0))
-                      // })
-                      
-                    },
+              child: Center(
+                child: IconButton(
+                  icon: SvgPicture.asset(
+                    item_icons[index]['icon'],
+                    width: item_icons[index]['icon_size'],
                   ),
+                  onPressed: () async {
+                    if (item_icons[index]['type'] == "like") {
+                      var response = await _animalsServices.postLikeAnimal(
+                        _animalsServices.animals[0].id,
+                      );
+
+                      if (response != -1) {
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible: false, // user must tap button!
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.pink[50],
+                              title: SvgPicture.asset(
+                                "assets/images/explore_active_icon.svg",
+                                height: 30,
+                                width: 30,
+                              ),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: const <Widget>[
+                                    Center(
+                                      child: Text(
+                                        'DeuPet!',
+                                        style: TextStyle(
+                                          fontSize: 30,
+                                          fontFamily: 'RobotoMono',
+                                          color: Color.fromARGB(
+                                            255,
+                                            231,
+                                            57,
+                                            115,
+                                          ),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        'Entre em contato com a instituição para prosseguir com a adoção',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontFamily: 'RobotoMono',
+                                          color: Color.fromARGB(
+                                            255,
+                                            134,
+                                            102,
+                                            113,
+                                          ),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text(
+                                    'Confirmar',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(
+                                        255,
+                                        231,
+                                        57,
+                                        115,
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+
+                        _animalsServices.animals.removeAt(
+                          _animalsServices.animals
+                              .indexOf(_animalsServices.animals.first),
+                        );
+
+                        setState(() {
+                          streamController.add(_animalsServices.animals);
+                        });
+
+                        return;
+                      }
+                    }
+
+                    _animalsServices.animals.removeAt(
+                      _animalsServices.animals
+                          .indexOf(_animalsServices.animals.first),
+                    );
+
+                    setState(() {
+                      streamController.add(_animalsServices.animals);
+                    });
+
+                    //Tentei verificar o tamanho da lista pelo service e manipular dessa forma, embora atualize, é necessário
+                    //Atualizar o list.lenght caso queira fazer um pop na lista ao clicar no botão
+                    // setState(() {
+                    //  _animalsServices.animals.length-1;
+                    // })
+
+                    //Essa primeira forma tentei passar a posicao e o index do card
+                    // setState(() => {
+                    //   CardSwipeOrientation.RIGHT.index
+                    // })
+
+                    //Essa segunda, passando o offset da posicao do card mais um align ali pelo delta, porque o if rola quando o align.x é maior que
+                    //zero, ai passei (1,0) pra testar, porém sem sucesso
+                    // setState(() => {
+                    //   DragUpdateDetails(globalPosition: Offset.zero, delta: Offset(1,0))
+                    // })
+                  },
                 ),
-              );
+              ),
+            );
           }),
         ),
       ),
