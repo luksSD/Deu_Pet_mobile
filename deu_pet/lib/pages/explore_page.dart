@@ -110,13 +110,14 @@ class _ExplorePageState extends State<ExplorePage>
                           Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: grey.withOpacity(0.3),
-                              blurRadius: 5,
-                              spreadRadius: 2,
-                            ),
-                          ],
+                          gradient: LinearGradient(
+                            colors: [
+                              black.withOpacity(0.80),
+                              white.withOpacity(0.75),
+                            ],
+                            end: Alignment.topCenter,
+                            begin: Alignment.bottomCenter,
+                          ),
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -142,16 +143,6 @@ class _ExplorePageState extends State<ExplorePage>
                               Container(
                                 width: size.width,
                                 height: size.height,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      black.withOpacity(0.25),
-                                      black.withOpacity(0),
-                                    ],
-                                    end: Alignment.topCenter,
-                                    begin: Alignment.bottomCenter,
-                                  ),
-                                ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.start,
