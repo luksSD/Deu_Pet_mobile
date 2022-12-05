@@ -5,6 +5,7 @@ import 'package:deu_pet/pages/account_page.dart';
 import 'package:deu_pet/pages/chat_page.dart';
 import 'package:deu_pet/pages/explore_page.dart';
 import 'package:deu_pet/pages/likes_page.dart';
+import 'package:http/http.dart';
 
 class RootPage extends StatefulWidget {
   @override
@@ -29,7 +30,7 @@ class _RootPageState extends State<RootPage> {
     );
   }
 
-  Widget getAppBar() {
+  AppBar getAppBar() {
     List bottomItems = [
       pageIndex == 0
           ? "assets/images/explore_active_icon.svg"

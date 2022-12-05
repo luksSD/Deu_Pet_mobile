@@ -1,3 +1,4 @@
+
 const List explore_json = [
   {
     "img": "assets/images/animals/adilson.jpg",
