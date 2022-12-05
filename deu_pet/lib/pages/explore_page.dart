@@ -103,7 +103,7 @@ class _ExplorePageState extends State<ExplorePage>
                           //     //Left Swipe
                           //   }
                           // },
-                          Container(
+                        Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
@@ -339,18 +339,24 @@ class _ExplorePageState extends State<ExplorePage>
                               barrierDismissible: false, // user must tap button!
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: const Text('DEU PET'),
+                                  backgroundColor: Colors.pink[50],
+                                  title:  SvgPicture.asset(
+                                        "assets/images/explore_active_icon.svg",
+                                        height: 30, width: 30
+                                        ),
                                   content: SingleChildScrollView(
                                     child: ListBody(
                                       children: const <Widget>[
-                                        Text('This is a demo alert dialog.'),
-                                        Text('DEU PET'),
+                                        Center(child: Text('DeuPet!',  style: TextStyle(fontSize: 30, fontFamily: 'RobotoMono', 
+                                        color: Color.fromARGB(255, 231, 57, 115), fontWeight: FontWeight.bold))),
+                                        Center(child: Text('Entre em contato com a instituição para prosseguir com a adoção',  style: TextStyle(fontSize: 10, fontFamily: 'RobotoMono', 
+                                        color: Color.fromARGB(255, 134, 102, 113), fontWeight: FontWeight.bold))),
                                       ],
                                     ),
                                   ),
                                   actions: <Widget>[
                                     TextButton(
-                                      child: const Text('Approve'),
+                                      child: const Text('Confirmar', style: TextStyle(color: Color.fromARGB(255, 231, 57, 115)),),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
@@ -404,13 +410,37 @@ class _ExplorePageState extends State<ExplorePage>
                       // changes position of shadow
                     ),
                   ]),
-              child: Center(
-                child: SvgPicture.asset(
-                  item_icons[index]['icon'],
-                  width: item_icons[index]['icon_size'],
+                child: Center(
+                  child: IconButton(
+                    icon: 
+                    SvgPicture.asset(
+                      item_icons[index]['icon'],
+                      width: item_icons[index]['icon_size'],
+                    ),
+                    onPressed: () => {
+                      
+                      //Tentei verificar o tamanho da lista pelo service e manipular dessa forma, embora atualize, é necessário
+                      //Atualizar o list.lenght caso queira fazer um pop na lista ao clicar no botão
+                      // setState(() {
+                      //  _animalsServices.animals.length-1;
+                      // })
+
+
+                      //Essa primeira forma tentei passar a posicao e o index do card
+                      // setState(() => {
+                      //   CardSwipeOrientation.RIGHT.index
+                      // })
+
+                      //Essa segunda, passando o offset da posicao do card mais um align ali pelo delta, porque o if rola quando o align.x é maior que 
+                      //zero, ai passei (1,0) pra testar, porém sem sucesso
+                      // setState(() => {
+                      //   DragUpdateDetails(globalPosition: Offset.zero, delta: Offset(1,0))
+                      // })
+                      
+                    },
+                  ),
                 ),
-              ),
-            );
+              );
           }),
         ),
       ),
